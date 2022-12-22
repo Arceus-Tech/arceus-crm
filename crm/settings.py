@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     "crispy_tailwind",
-    'agents.backends.MyAuthConfig',
-
     # Phone number validation
     'phonenumber_field',
 
@@ -169,8 +167,3 @@ LOGIN_REDIRECT_URL = "/leads"
 LOGOUT_REDIRECT_URL = "/"
 
 LOGIN_URL = "/login"
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'agents.backends.MyAuthConfig.MyBackend',
-)
