@@ -1,0 +1,3 @@
+<h1> {{lead.lead_name}}</h1>
+<p>{{lead.email}}</p>
+<button hx-target="#lead-detail" hx-get="{%  url 'leads:lead-edit' lead.id %}">edit</button>

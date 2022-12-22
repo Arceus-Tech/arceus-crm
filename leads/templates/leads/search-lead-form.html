@@ -1,0 +1,174 @@
+<form action="." class="w-full">
+    
+    <div class="flex justify-between items-center py-4">
+        <div class="flex">
+            {% if request.user.UserPosition.name != "Agent" %}
+            <a href="{% url 'leads:lead-create' %}"
+            class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-l-lg text-sm px-5 py-2  dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Create a new lead</a>
+      
+            <a href="{% url 'leads:lead-upload' %}"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-r-lg text-sm px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Upload
+            Lead</a>
+            {% endif %}
+          </div>
+        
+        <div class="flex gap-4">
+        <button id="campaignButton" data-dropdown-toggle="campaignButtonHover"
+        class="inline-flex items-center py-2 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-600  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button">Source<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
+
+        <!-- Dropdown menu -->
+        <div id="campaignButtonHover" class="hidden z-10 w-48 bg-white rounded shadow ">
+            <ul class="p-3 space-y-1 text-xs text-gray-700" aria-labelledby="campaignButton">
+                {% for campaign in campaigns %}
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                        <input id="{{ campaign.pk }}" type="checkbox" value="{{ campaign.pk }}" name="campaign_id"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
+                        <label for="{{ campaign.pk }}" class="ml-2 w-full text-xs font-normal text-gray-900 rounded ">
+                            {{ campaign.name }}</label>
+                    </div>
+                </li>
+                {% endfor%}
+
+            </ul>
+        </div>
+
+        {% if request.user.UserPosition.name != "Agent" %}
+        <button id="agentButton" data-dropdown-toggle="agentButtonHover"
+        class="inline-flex items-center py-2 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-600  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        type="button">Agents<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
+
+        <!-- Dropdown menu -->
+        <div id="agentButtonHover" class="hidden z-10 w-48 bg-white rounded shadow ">
+            <ul class="p-3 space-y-1 text-xs text-gray-700" aria-labelledby="agentButton">
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                        <input id="Unassigned" type="checkbox" value="Unassigned" name="agent_id"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
+                        <label for="Unassigned" class="ml-2 w-full text-xs font-normal text-gray-900 rounded ">
+                            Unassigned</label>
+                    </div>
+                </li>
+                {% for agent in agents %}
+                
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+
+
+                        <input id="{{ agent.pk }}" type="checkbox" value="{{ agent.pk }}" name="agent_id"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
+                        <label for="{{ agent.pk }}" class="ml-2 w-full text-xs font-normal text-gray-900 rounded ">
+                            {{ agent.user }}</label>
+                    </div>
+                </li>
+
+                {% endfor%}
+
+            </ul>
+        </div>
+
+        {% endif %}
+        <button id="noteButton" data-dropdown-toggle="noteButtonHover"
+        class="inline-flex items-center py-2 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-600  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+        type="button">Status<svg class="ml-2 w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+            </svg></button>
+
+        <!-- Dropdown menu -->
+        <div id="noteButtonHover" class="hidden z-10 w-48 bg-white rounded shadow ">
+            <ul class="p-3 space-y-1 text-xs text-gray-700" aria-labelledby="agentButton">
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                        <input id="Fresh" type="checkbox" value="Fresh" name="note_id"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
+                        <label for="Fresh" class="ml-2 w-full text-xs font-normal text-gray-900 rounded ">
+                            Fresh</label>
+                    </div>
+                </li>
+                {% for status in statuses %}
+
+                <li>
+                    <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                        <input id="{{ status.pk }}" type="checkbox" value="{{ status.pk }}" name="note_id"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
+                        <label for="{{ status.pk }}" class="ml-2 w-full text-xs font-normal text-gray-900 rounded ">
+                            {{ status.name }}</label>
+                    </div>
+                </li>
+                {% endfor%}
+
+            </ul>
+        </div>
+
+        <div>
+            <button id="dropdownRadioButton" data-dropdown-toggle="dropdownFilter"
+            class="inline-flex items-center py-2 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-600  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            type="button">
+                Filter By
+                <svg class="ml-2 w-3 h-3" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownFilter" class="hidden z-10 w-48 bg-white rounded divide-y divide-gray-100 shadow "
+                data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="top"
+                style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate3d(522.5px, 3847.5px, 0px);">
+                <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownRadioButton">
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                            <input checked="checked" id="filter-radio-example-2" type="radio" value="id" name="filter"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <label for="filter-radio-example-2"
+                                class="ml-2 w-full text-xs font-normal text-gray-900 rounded">Name</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                            <input id="filter-radio-example-2" type="radio" value="number" name="filter"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <label for="filter-radio-example-2"
+                                class="ml-2 w-full text-xs font-normal text-gray-900 rounded">Phone
+                                Number</label>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center p-2 rounded hover:bg-gray-100 ">
+                            <input id="filter-radio-example-2" type="radio" value="email" name="filter"
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                            <label for="filter-radio-example-2"
+                                class="ml-2 w-full text-xs font-normal text-gray-900 rounded">Email
+                                Id</label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex">
+            <div class="relative w-full">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input type="text" id="table-search" name="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search">
+            </div>
+            <button type="submit" class="p-2 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <span class="sr-only">Search</span>
+            </button>
+            <label for="table-search" class="sr-only">Search</label>
+            
+        </div>
+    </div>
+    </div>
+    <hr class="my-3 h-px bg-gray-200 border-0 dark:bg-gray-700">
+</form>

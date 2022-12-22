@@ -1,0 +1,60 @@
+<section class="text-gray-600 body-font w-full max-h-[32rem] overflow-auto ">
+    {% if comments %}
+    {% csrf_token %}
+    {% for comment in comments %}
+    <div class="container w-full py-5 mx-auto">
+
+      <div
+        class="flex flex-col items-center mx-auto text-center mx-auto border-b pb-2 mb-2 border-gray-200 dark:border-gray-700 sm:flex-row flex-col">
+
+        <div class="flex flex-col sm:text-left text-center gap-2 mt-6 sm:mt-0">
+          <p class="text-sm font-medium text-gray-900 truncate dark:text-white"><i class="fa-solid fa-user mr-2"></i> {{ comment.agent.user.first_name}} {{comment.agent.user.last_name}} ({{ comment.agent}})</p>
+          <div class="flex gap-5 items-center">
+
+            <h2 class="inline-flex items-center text-base font-semibold text-gray-500 dark:text-gray-400"><i class="fa-solid fa-calendar-days mr-2"></i> {{ comment.date_added}}</h2>
+            {% if comment.status.name == "Follow up" %}
+            <span class="bg-blue-100 text-blue-800 text-sm  px-2 py-0.5 rounded ">
+              {{comment.status.name}}
+            </span>
+              {% elif comment.status.name == "No Answer" %}
+              <span class="bg-red-100 text-red-800 text-sm  px-2 py-0.5  rounded">
+                {{comment.status.name}}
+              </span>
+
+              {% elif comment.status.name == "Call Back" %}
+              <span class="bg-yellow-100 text-yellow-800 text-sm  px-2 py-0.5  rounded">
+                {{comment.status.name}}
+              </span>
+
+              {% elif comment.status.name == "Not interested" %}
+              <span class="bg-purple-100 text-purple-800 text-sm  px-2 py-0.5  rounded">
+                {{comment.status.name}}
+              </span>
+
+              {% elif comment.status.name == "Hindi" %}
+              <span class="bg-pink-100 text-pink-800 text-sm  px-2 py-0.5  rounded">
+                {{comment.status.name}}
+              </span>
+
+
+              {% elif not comment.status %}
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                Fresh
+              </span>
+
+              {% else %}
+              <span class="">
+                {{lead.status.name}}
+              </span>
+
+            {% endif %}
+
+          </div>
+            
+          <div class="flex gaps-2 items-start justify-center p-2"><i class="fa-solid fa-message p-2"></i><p class="leading-relaxed text-sm w-full text-gray-500 dark:text-gray-400">{{ comment.note }}</p></div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </section>

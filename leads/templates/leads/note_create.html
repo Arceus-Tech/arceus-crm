@@ -1,0 +1,85 @@
+{% extends "base.html"%}
+{% load tailwind_filters %}
+
+{% block content%}
+
+<section class="text-gray-600 mt-10  body-font">
+  <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+      <li class="inline-flex items-center">
+        <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <div class="flex items-center">
+          <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+          <a href="{{ request.META.HTTP_REFERER }}" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2 dark:text-gray-400 dark:hover:text-white">Leads</a>
+        </div>
+      </li>
+      <li aria-current="page">
+        <div class="flex items-center">
+          <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+          <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{lead}}</span>
+        </div>
+      </li>
+    </ol>
+  </nav>
+  
+  <hr class="my-3 h-px bg-gray-200 border-0 dark:bg-gray-700">
+
+  <h2 class="mb-4 text-3xl font-bold text-center leading-none text-gray-900 md:text-4xl dark:text-white">Update Disposition</h2>
+  <ul class="flex flex-wrap justify-center items-center mb-6 text-gray-900 dark:text-white">
+    <li  class="mr-4 hover:underline md:mr-6 "><i class="fa-solid fa-user mr-2"></i><span onclick="selectElementContents(this)" class="cursor-pointer ">{{lead}}</span></li>
+    <li  class="mr-4 hover:underline md:mr-6 "><i class="fa-solid fa-envelope mr-2"></i><span onclick="selectElementContents(this)" class=" cursor-pointer">{{lead.email}}</span></li>
+    <li  class="mr-4 hover:underline md:mr-6 "><i class="fa-solid fa-phone mr-2"></i><span onclick="selectElementContents(this)" class="cursor-pointer ">{{lead.phone_number}}</span></li>
+    <li  class="mr-4 hover:underline md:mr-6 "><i class="fa-solid fa-calendar-day mr-2"></i><span class=" ">{{lead.date_added}}</span></li>
+  </ul>
+  
+
+
+  <hr class="my-3 h-px bg-gray-200 border-0 dark:bg-gray-700">
+  <div class="grid grid-cols-2 ">
+    <form hx-post="{% url 'leads:update-comment' lead.pk %}" hx-target='#comments-id' class="form w-full px-10 max-h-[32rem] " method="post">
+      {% csrf_token %}
+      <label for="id_select" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select the Status</label>
+      {{form.status}}
+      <label for="id_note" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Note*</label>
+      {{form.note}}
+      <button type="submit" hx-post="{% url 'leads:update-comment' lead.pk %}" hx-target='#comments-id'
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ">Submit</button>
+      <a href="/leads/?note_id=5&filter=id&search="  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ">Show New Leads</a>
+    </form>
+    <div id="comments-id">{% include 'leads/comment_list.html' %}</div>
+    
+  </div>
+</section>
+<script>
+  function changer(e){
+      document.getElementById('id_note').innerHTML = e.options[e.selectedIndex].text;
+    }
+  
+  var clicked = false;
+  $(".all-check").on("click", function () {
+    $(".id-check").prop("checked", !clicked);
+    clicked = !clicked;
+    this.innerHTML = clicked ? 'Deselect' : 'Select';
+  });
+
+  function selectElementContents(el) {
+    if (window.getSelection && document.createRange) {
+      var sel = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } else if (document.selection && document.body.createTextRange) {
+      var textRange = document.body.createTextRange();
+      textRange.moveToElementText(el);
+      textRange.select();
+    }
+    document.execCommand("copy");
+  }
+</script>
+{% endblock content%}

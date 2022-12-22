@@ -1,0 +1,5 @@
+<form action="." hx-put="{%  url 'leads:lead-detail' lead.id %}" hx-target="#lead-detail">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="submit">
+</form>

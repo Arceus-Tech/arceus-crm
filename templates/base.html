@@ -1,0 +1,46 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+
+    <title>Arceus CRM</title>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+                maxWidth: {
+                    '3': '3rem',
+                    '5': '10rem',
+                }
+            }
+          }
+        }
+      </script>
+
+</head>
+<body >
+    <div class="max-w-screen py-2 px-5 flex flex-col mx-auto min-h-full dark:bg-gray-900">
+        {% include "navbar.html" %}
+        {% include "sidebar.html" %}
+        {% block content %}
+    
+    
+        {% endblock content %}
+    </div>
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}'; //insert csrf token when performing AJAX request 
+        })
+
+       
+        </script>
+</body>
+</html>
